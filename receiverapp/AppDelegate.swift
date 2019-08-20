@@ -41,6 +41,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    // для того чтобы наше приложение принимало данные из приложения sender мы пропишем следующее
+    func application(_ application: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:] ) -> Bool {
+        
+        // Determine who sent the URL.
+        let sendingAppID = options[.sourceApplication]
+        print("source application = \(sendingAppID ?? "Unknown")")
+        
+        // Process the URL.
+        guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
+            let albumPath = components.path,
+            let params = components.queryItems else {
+                print("Invalid URL or album path missing")
+                return true
+        }
+        print("Album path = \(albumPath)")
+        print("params = \(params.description)")
+        return true
+    }
 
 }
-
